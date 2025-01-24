@@ -42,6 +42,7 @@ export const stepsData = [
       title: 'Describe Your Vision',
       description: 'Type a phrase, sentence, or paragraph that describes the image you want to create.',
       icon: step_icon_1,
+      
     },
     {
       title: 'Watch the Magic',
@@ -99,3 +100,5 @@ export const plans = [
       desc: 'Best for enterprise use.'
     },
   ]
+
+  export default stepsData;
