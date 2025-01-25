@@ -3,7 +3,7 @@ import stepsData from "./../assets/assets";
 const HowWorks = () => {
   return (
     <div className="how-works-container py-16 bg-secondary text-white">
-      <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-center">
+      <h1 className="text-3xl sm:text-5xl font-bold mb-6 text-center">
         How It Works
       </h1>
       <p className="text-lg text-center text-gray-400 mb-12">

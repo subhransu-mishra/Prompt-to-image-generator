@@ -1,7 +1,8 @@
 import React from "react";
 import { FaGithub, FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { FaLinkedinIn } from "react-icons/fa6";
+
 
 const Footer = () => {
   return (
@@ -14,7 +15,7 @@ const Footer = () => {
           {/* Social Media Icons */}
           <div className="flex gap-6">
             <a
-              href="https://github.com"
+              href="https://github.com/subhransu-mishra"
               target="_blank"
               rel="noopener noreferrer"
               className="group"
@@ -24,7 +25,7 @@ const Footer = () => {
               </div>
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/subhransumishra_/"
               target="_blank"
               rel="noopener noreferrer"
               className="group"
@@ -40,7 +41,7 @@ const Footer = () => {
               className="group"
             >
               <div className="p-3 rounded-full bg-gray-800/50 backdrop-blur-sm transition-all duration-300 group-hover:bg-gray-700/50 group-hover:scale-110">
-                <FaXTwitter className="w-5 h-5 text-white group-hover:text-white" />
+                <FaLinkedinIn className="w-5 h-5 text-white group-hover:text-white" />
               </div>
             </a>
           </div>

@@ -18,7 +18,7 @@ const Hero = () => {
           {/* Text Content */}
           <div className="space-y-6 text-center">
             <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-              Transform Text Into Stunning Images
+              Transform Text Into Stunning <span className="text-blue-400  animate-pulse">AI</span> Images
             </h1>
             <p className="text-lg">
               Discover the magic of AI-powered creativity! Type your thoughts

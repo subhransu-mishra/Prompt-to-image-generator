@@ -9,7 +9,7 @@ const Testimonials = () => {
       rating: 5,
       review:
         "This AI image generator has completely transformed my creative workflow. The quality and speed are unmatched!",
-      image: "/avatar1.jpg",
+      image: "https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=612x612&w=0&k=20&c=tyLvtzutRh22j9GqSGI33Z4HpIwv9vL_MZw_xOE19NQ=",
     },
     {
       name: "Michael Chen",
@@ -17,7 +17,7 @@ const Testimonials = () => {
       rating: 4,
       review:
         "Incredibly versatile tool. The style variations and customization options are exactly what I needed for my projects.",
-      image: "/avatar2.jpg",
+      image: "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg",
     },
     {
       name: "Emma Williams",
@@ -25,7 +25,7 @@ const Testimonials = () => {
       rating: 5,
       review:
         "The ease of use and quick results make this my go-to choice for generating unique images. Absolutely love it!",
-      image: "/avatar3.jpg",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6Hb5xzFZJCTW4cMqmPwsgfw-gILUV7QevvQ&s",
     },
     {
       name: "David Miller",
@@ -33,7 +33,7 @@ const Testimonials = () => {
       rating: 5,
       review:
         "Outstanding results every time. The AI understands exactly what I'm looking for and delivers consistently.",
-      image: "/avatar4.jpg",
+      image: "https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg=",
     },
   ];
 
@@ -64,7 +64,7 @@ const Testimonials = () => {
               {/* User Info */}
               <div className="flex items-center mb-4">
                 <img
-                  src={testimonialsData.image}
+                  src={testimonial.image}
                   alt={testimonial.name}
                   className="w-12 h-12 rounded-full object-cover"
                 />
