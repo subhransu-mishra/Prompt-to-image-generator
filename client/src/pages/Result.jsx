@@ -5,8 +5,12 @@ import { FiDownload } from "react-icons/fi";
 
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [loading,setLoading] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(true);
+  const [loading,setLoading] = useState(false);
+  const [input, setInput] = useState("");
+
+  const onSubmitHandler = async (e) => {}
+
   return (
     <div className="min-h-screen bg-primary pt-24 flex items-center justify-center">
       <div className="max-w-4xl w-full flex flex-col items-center justify-center gap-8 px-4 sm:px-6">
@@ -24,7 +28,7 @@ const Result = () => {
                 <div className="h-full w-3/4 bg-blue-500 animate-pulse"></div>
               </div>
               <div className="text-white text-sm absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm px-4 py-1 rounded-full">
-                <p className={!loading ? "hidden" : ""}>Generating...</p>
+                <p className={!loading ? "hidden" : ""} >Generating...</p>
               </div>
             </div>
           </div>
@@ -32,10 +36,11 @@ const Result = () => {
 
         {/* Input Section */}
         <div className="w-full max-w-md flex flex-col items-center gap-6 px-4 sm:px-0">
-          <form className="w-full flex flex-col items-center gap-4">
+          <form onSubmit={onSubmitHandler} className="w-full flex flex-col items-center gap-4">
             {!isImageLoaded && (
               <div className="w-full relative">
                 <input
+                onChange={(e) => setInput(e.target.value)} value={input}
                   type="text"
                   placeholder="Describe your imagination here..."
                   className="w-full px-6 py-4 pr-14 bg-gray-900/50 backdrop-blur-sm rounded-xl 

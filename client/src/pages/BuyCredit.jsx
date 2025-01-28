@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaCheck } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { AppContext } from "../context/AppContext";
 
 const BuyCredit = () => {
+  const {user} = useContext(AppContext);
+
   const plans = [
     {
       name: "Starter",
-      credits: "50",
-      price: "4.99",
+      credits: "100",
+      price: "10",
       features: [
         "50 Image Generations",
         "Standard Resolution",
@@ -116,7 +119,7 @@ const BuyCredit = () => {
                       : "bg-gradient-to-r from-gray-800 to-zinc-900 hover:from-gray-700 hover:to-zinc-800 text-white border border-gray-700"
                   }`}
                 >
-                  Get Started
+                  {user? "Purchase" : "Get Started"}
                 </button>
               </div>
             </motion.div>

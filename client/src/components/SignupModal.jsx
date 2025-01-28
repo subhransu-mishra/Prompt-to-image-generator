@@ -1,8 +1,52 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { setToken, setUser, backendUrl } = useContext(AppContext);
+
+  const onSubmitHandler = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${backendUrl}/api/user/register`, {
+        name,
+        email,
+        password,
+      });
+      const data = response.data;
+
+      console.log("Response Data:", data);
+
+      if (data.success) {
+        setToken(data.token);
+        setUser(data.user);
+        localStorage.setItem("token", data.token); // Corrected here
+        onClose();
+        toast.success("Account created successfully");
+      } else {
+        // Ensure this block only runs if data.success is false
+        toast.error(data.message || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      // Access error response safely
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -43,12 +87,15 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                 Create Account
               </h2>
 
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={onSubmitHandler}>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Full Name
                   </label>
                   <input
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
                     type="text"
                     className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
                     focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
@@ -61,6 +108,9 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                     Email
                   </label>
                   <input
+                    name="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                     type="email"
                     className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
                     focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
@@ -73,6 +123,9 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                     Password
                   </label>
                   <input
+                    name="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     type="password"
                     className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
                     focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
@@ -87,7 +140,11 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                   font-medium transition-all duration-300 border border-zinc-600 
                   hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50"
                 >
-                  Sign Up
+                  {isLoading ? (
+                    <span className="loading loading-dots loading-md"></span>
+                  ) : (
+                    "Sign Up"
+                  )}
                 </button>
               </form>
 

@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { setToken, setUser, backendUrl } = useContext(AppContext);
+
+  const onSubmitHandler = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`${backendUrl}/api/user/login`, {
+        email,
+        password,
+      });
+      const data = response.data;
+      console.log("Response Data:", data);
+      if (data.success) {
+        setToken(data.token);
+        setUser(data.user);
+        localStorage.setItem("token", data.token);
+        onClose();
+        toast.success("Account login successfully");
+      } else {
+        toast.error(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -43,12 +81,15 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
                 Welcome to Canvas.ai
               </h2>
 
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={onSubmitHandler}>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Email
                   </label>
                   <input
+                    name="email"
+                    onChange={(e) => setemail(e.target.value)}
+                    value={email}
                     type="email"
                     className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
                     focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
@@ -61,6 +102,9 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
                     Password
                   </label>
                   <input
+                    name="password"
+                    onChange={(e) => setpassword(e.target.value)}
+                    value={password}
                     type="password"
                     className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
                     focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
@@ -75,7 +119,11 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
                   font-medium transition-all duration-300 border border-zinc-600 
                   hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50"
                 >
-                  Sign In
+                  {isLoading ? (
+                    <span className="loading loading-dots loading-md"></span>
+                  ) : (
+                    "Sign In"
+                  )}
                 </button>
               </form>
 
