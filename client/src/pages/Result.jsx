@@ -1,15 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from 'react';
 import { assets } from "../assets/assets";
 import { FaMagic } from "react-icons/fa";
 import { FiDownload } from "react-icons/fi";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
+
 
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
   const [isImageLoaded, setIsImageLoaded] = useState(true);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
+  
+  const { backendUrl, token ,loadCreditsData } = useContext(AppContext);
+  const navigate = useNavigate();
 
-  const onSubmitHandler = async (e) => {}
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if(input){
+      const image = await generateImage(input);
+      if(image){
+        setImage(image);
+        setIsImageLoaded(true);
+        setInput("");
+      }
+    }
+    setLoading(false);
+  };
+
+  const generateImage = async (prompt) => {
+    try {
+      const {data} = await axios.post(
+        `${backendUrl}/api/image/generate-image`,
+        { prompt },
+        { headers: { token } }
+      );
+      if(data.success){
+        loadCreditsData();
+        return data.resultImage
+      }else{
+        toast.error(data.message)
+        loadCreditsData();
+        if(data.credits<=0){
+          navigate("/buy")
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-primary pt-24 flex items-center justify-center">
@@ -17,7 +59,12 @@ const Result = () => {
         {/* Image Result Section */}
         <div className="w-full flex justify-center">
           <div className="relative rounded-xl overflow-hidden shadow-2xl w-[280px] sm:w-[400px] md:w-[450px] group">
-            <img src={image} className="w-full h-auto" alt="Generated Image" />
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+                <span className="loading loading-infinity loading-md"></span> 
+              </div>
+            )}
+            <img src="https://wallpapercave.com/wp/wp6123604.jpg" className="w-full h-auto" alt="Generated Image" />
 
             {/* Download Button */}
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -28,7 +75,7 @@ const Result = () => {
                 <div className="h-full w-3/4 bg-blue-500 animate-pulse"></div>
               </div>
               <div className="text-white text-sm absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm px-4 py-1 rounded-full">
-                <p className={!loading ? "hidden" : ""} >Generating...</p>
+                <p className={!loading ? "hidden" : ""}>Generating...</p>
               </div>
             </div>
           </div>
@@ -36,22 +83,26 @@ const Result = () => {
 
         {/* Input Section */}
         <div className="w-full max-w-md flex flex-col items-center gap-6 px-4 sm:px-0">
-          <form onSubmit={onSubmitHandler} className="w-full flex flex-col items-center gap-4">
+          <form
+            onSubmit={onSubmitHandler}
+            className="w-full flex flex-col items-center gap-4"
+          >
             {!isImageLoaded && (
               <div className="w-full relative">
                 <input
-                onChange={(e) => setInput(e.target.value)} value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  value={input}
                   type="text"
                   placeholder="Describe your imagination here..."
                   className="w-full px-6 py-4 pr-14 bg-gray-900/50 backdrop-blur-sm rounded-xl 
-                border border-gray-700 focus:border-blue-500 outline-none text-white 
-                placeholder:text-gray-400 transition-all duration-300"
+                    border border-gray-700 focus:border-blue-500 outline-none text-white 
+                    placeholder:text-gray-400 transition-all duration-300"
                 />
                 <button
                   className="absolute right-2 top-2/4 -translate-y-2/4 text-white bg-gradient-to-r from-gray-900 to-zinc-800 
-                hover:from-gray-800 hover:to-zinc-700 px-4 py-2 rounded-lg text-sm 
-                font-medium transition-all duration-300 border border-zinc-600 
-                hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-1"
+                    hover:from-gray-800 hover:to-zinc-700 px-4 py-2 rounded-lg text-sm 
+                    font-medium transition-all duration-300 border border-zinc-600 
+                    hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-1"
                   type="submit"
                 >
                   <FaMagic className="w-4 h-4" />
@@ -66,11 +117,9 @@ const Result = () => {
               <a
                 href={image}
                 className="flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-full 
-              border border-zinc-600 hover:border-zinc-500 shadow-lg 
-              hover:shadow-zinc-700/50 text-white hover:text-white transition-all duration-300"
-                onClick={() => {
-                  /* Add download logic */
-                }}
+                  border border-zinc-600 hover:border-zinc-500 shadow-lg 
+                  hover:shadow-zinc-700/50 text-white hover:text-white transition-all duration-300"
+                
                 download
               >
                 <FiDownload className="w-5 h-5" />
@@ -79,11 +128,11 @@ const Result = () => {
 
               <button
                 className="text-white bg-gradient-to-r from-gray-900 to-zinc-800 
-              hover:from-gray-800 hover:to-zinc-700 px-6 py-3 rounded-lg text-sm 
-              font-medium transition-all duration-300 border border-zinc-600 
-              hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-2"
+                  hover:from-gray-800 hover:to-zinc-700 px-6 py-3 rounded-lg text-sm 
+                  font-medium transition-all duration-300 border border-zinc-600 
+                  hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-2"
                 onClick={() => {
-                 setIsImageLoaded(false)
+                  setIsImageLoaded(false);
                 }}
               >
                 Generate Another

@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   return (
     <div className=" min-h-screen bg-primary">
-      <ToastContainer position="top-center" theme="light"/>
+      <ToastContainer position="top-center" theme="dark"/>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
