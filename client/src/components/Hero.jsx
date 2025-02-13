@@ -1,36 +1,65 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { RiAiGenerate2 } from "react-icons/ri";
-import setIsLoginModalOpen from "./Navbar";
+import { motion } from "framer-motion";
+import "../styles/Hero.css";
 
 const Hero = () => {
   const navigate = useNavigate();
-  const {loginModal} = setIsLoginModalOpen;
+
   return (
-    
     <div
-      className="mt-16 w-full min-h-screen bg-cover bg-center bg-fixed text-white py-16 lg:px-0 backdrop-blur-sm"
+      className="mt-16 w-full min-h-screen bg-cover bg-center bg-fixed text-white py-16 lg:px-0 relative overflow-hidden"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')",
       }}
     >
-      <div className="bg-black/30 backdrop-blur-sm p-8 rounded-lg min-h-[calc(100vh-8rem)]  flex items-center">
-        <div className="max-w-3xl mx-auto">
-          {/* Text Content */}
-          <div className="space-y-6 text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-              Transform Text Into Stunning <span className="text-blue-400  animate-pulse">AI</span> Images
-            </h1>
-            <p className="text-lg">
-              Discover the magic of AI-powered creativity! Type your thoughts
-              and watch them turn into captivating visuals instantly.
-            </p>
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm animate-pulse-slow"></div>
 
-            <button onClick={()=>navigate("/result")} className=" hover:cursor-pointer justify-center text-white bg-gradient-to-r from-gray-900 to-zinc-800 hover:from-gray-800 hover:to-zinc-700 px-10 py-3 rounded-lg text-lg font-medium transition-all duration-300 border border-zinc-600 hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-2 mx-auto">
-             Try Now<RiAiGenerate2 className="inline-block w-6 h-6 hover:cursor-pointer" />
-            </button>
-          </div>
+      <div className="relative z-10 p-8 rounded-lg min-h-[calc(100vh-8rem)] flex items-center">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+          <motion.h1
+            className="text-4xl sm:text-5xl font-bold leading-tight m-3"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            Transform Text Into Stunning
+            <motion.span
+              className="text-blue-400 m-2"
+              animate={{ opacity: [0.6, 1, 0.6] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              AI
+            </motion.span>
+            Images
+          </motion.h1>
+
+          <motion.p
+            className="text-lg mt-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+          >
+            Discover the magic of AI-powered creativity! Type your thoughts and
+            watch them turn into captivating visuals instantly.
+          </motion.p>
+
+          <motion.button
+            onClick={() => navigate("/result")}
+            className="mt-6 px-10 py-3 rounded-lg text-lg font-medium bg-gradient-to-r from-gray-900 to-zinc-800 text-white border border-zinc-600 shadow-lg flex items-center gap-2 mx-auto"
+            whileHover={{
+              scale: 1.1,
+              backgroundColor: "#3b82f6",
+              transition: { duration: 0.3 },
+            }}
+            whileTap={{ scale: 0.95 }}
+            animate={{ y: [0, -5, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+          >
+            Try Now <RiAiGenerate2 className="w-6 h-6" />
+          </motion.button>
         </div>
       </div>
     </div>

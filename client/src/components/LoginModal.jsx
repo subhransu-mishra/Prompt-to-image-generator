@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import { FaTimes, FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setToken, setUser, backendUrl } = useContext(AppContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmitHandler = async (e) => {
     setIsLoading(true);
@@ -101,15 +102,28 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Password
                   </label>
-                  <input
-                    name="password"
-                    onChange={(e) => setpassword(e.target.value)}
-                    value={password}
-                    type="password"
-                    className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
-                    focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
-                    placeholder="Enter your password"
-                  />
+                  <div className="relative">
+                    <input
+                      name="password"
+                      onChange={(e) => setpassword(e.target.value)}
+                      value={password}
+                      type={showPassword ? "text" : "password"} // Toggle input type
+                      className="w-full px-4 py-3 pr-10 bg-gray-800/50 rounded-lg border border-gray-700 
+        focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
+                      placeholder="Enter your password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+                    >
+                      {showPassword ? (
+                        <FaEyeSlash className="w-5 h-5" />
+                      ) : (
+                        <FaEye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <button

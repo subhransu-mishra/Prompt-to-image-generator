@@ -7,49 +7,53 @@ import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
-
 const Result = () => {
-  const [image, setImage] = useState(assets.sample_img_1);
-  const [isImageLoaded, setIsImageLoaded] = useState(true);
+  const [image, setImage] = useState("/earth-pic.jpg");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
   
-  const { backendUrl, token ,loadCreditsData } = useContext(AppContext);
+  const { backendUrl, token, loadCreditsData } = useContext(AppContext);
   const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (!input) return;
+    
     setLoading(true);
-    if(input){
-      const image = await generateImage(input);
-      if(image){
-        setImage(image);
+    try {
+      const generatedImage = await generateImage(input);
+      if (generatedImage) {
+        setImage(generatedImage);
         setIsImageLoaded(true);
         setInput("");
       }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const generateImage = async (prompt) => {
     try {
-      const {data} = await axios.post(
+      const { data } = await axios.post(
         `${backendUrl}/api/image/generate-image`,
         { prompt },
         { headers: { token } }
       );
-      if(data.success){
-        loadCreditsData();
-        return data.resultImage
-      }else{
-        toast.error(data.message)
-        loadCreditsData();
-        if(data.credits<=0){
-          navigate("/buy")
-        }
+      
+      if (!data.success) {
+        toast.error(data.message);
+        if (data.credits <= 0) navigate("/buy");
+        return null;
       }
+      
+      loadCreditsData();
+      return data.resultImage;
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
+      return null;
     }
   };
 
@@ -64,62 +68,63 @@ const Result = () => {
                 <span className="loading loading-infinity loading-md"></span> 
               </div>
             )}
-            <img src="https://wallpapercave.com/wp/wp6123604.jpg" className="w-full h-auto" alt="Generated Image" />
-
+            <img 
+              src={image} 
+              className="w-full h-auto sm:w-96" 
+              alt="Generated Image" 
+              onLoad={() => setIsImageLoaded(true)}
+              onError={() => setIsImageLoaded(false)}
+            />
+            
             {/* Download Button */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-            {/* Loading Progress Bar */}
-            <div className="absolute bottom-0 left-0 w-full">
-              <div className="h-1 bg-blue-500 bg-opacity-50 backdrop-blur-sm">
-                <div className="h-full w-3/4 bg-blue-500 animate-pulse"></div>
+            {isImageLoaded && image !== assets.earth_img && (
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <a
+                  href={image}
+                  download
+                  className="p-2 bg-black/50 rounded-lg hover:bg-black/70 transition-colors"
+                >
+                  <FiDownload className="w-5 h-5 text-white" />
+                </a>
               </div>
-              <div className="text-white text-sm absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm px-4 py-1 rounded-full">
-                <p className={!loading ? "hidden" : ""}>Generating...</p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
         {/* Input Section */}
         <div className="w-full max-w-md flex flex-col items-center gap-6 px-4 sm:px-0">
-          <form
-            onSubmit={onSubmitHandler}
-            className="w-full flex flex-col items-center gap-4"
-          >
-            {!isImageLoaded && (
-              <div className="w-full relative">
-                <input
-                  onChange={(e) => setInput(e.target.value)}
-                  value={input}
-                  type="text"
-                  placeholder="Describe your imagination here..."
-                  className="w-full px-6 py-4 pr-14 bg-gray-900/50 backdrop-blur-sm rounded-xl 
-                    border border-gray-700 focus:border-blue-500 outline-none text-white 
-                    placeholder:text-gray-400 transition-all duration-300"
-                />
-                <button
-                  className="absolute right-2 top-2/4 -translate-y-2/4 text-white bg-gradient-to-r from-gray-900 to-zinc-800 
-                    hover:from-gray-800 hover:to-zinc-700 px-4 py-2 rounded-lg text-sm 
-                    font-medium transition-all duration-300 border border-zinc-600 
-                    hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-1"
-                  type="submit"
-                >
-                  <FaMagic className="w-4 h-4" />
-                </button>
-              </div>
-            )}
+          <form onSubmit={onSubmitHandler} className="w-full flex flex-col items-center gap-4">
+            <div className="w-full relative">
+              <input
+                onChange={(e) => setInput(e.target.value)}
+                value={input}
+                type="text"
+                placeholder="Describe your imagination here..."
+                className="w-full px-6 py-4 pr-14 bg-gray-900/50 backdrop-blur-sm rounded-xl 
+                  border border-gray-700 focus:border-blue-500 outline-none text-white 
+                  placeholder:text-gray-400 transition-all duration-300"
+              />
+              <button
+                className="absolute right-2 top-2/4 -translate-y-2/4 text-white bg-gradient-to-r from-gray-900 to-zinc-800 
+                  hover:from-gray-800 hover:to-zinc-700 px-4 py-2 rounded-lg text-sm 
+                  font-medium transition-all duration-300 border border-zinc-600 
+                  hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-1"
+                type="submit"
+                disabled={loading}
+              >
+                <FaMagic className="w-4 h-4" />
+              </button>
+            </div>
           </form>
 
           {/* Action Buttons */}
-          {isImageLoaded && (
+          {isImageLoaded && image !== assets.earth_img && (
             <div className="flex gap-4 justify-center">
               <a
                 href={image}
                 className="flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-full 
                   border border-zinc-600 hover:border-zinc-500 shadow-lg 
                   hover:shadow-zinc-700/50 text-white hover:text-white transition-all duration-300"
-                
                 download
               >
                 <FiDownload className="w-5 h-5" />
@@ -132,6 +137,7 @@ const Result = () => {
                   font-medium transition-all duration-300 border border-zinc-600 
                   hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50 flex items-center gap-2"
                 onClick={() => {
+                  setImage(assets.earth_img);
                   setIsImageLoaded(false);
                 }}
               >
@@ -139,6 +145,7 @@ const Result = () => {
               </button>
             </div>
           )}
+
           {/* Instructions */}
           <p className="text-gray-400 text-sm text-center">
             Try to be as descriptive as possible for better results

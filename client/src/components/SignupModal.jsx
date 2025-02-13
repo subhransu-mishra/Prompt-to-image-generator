@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaEyeSlash, FaEye } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import axios from "axios";
@@ -12,6 +12,7 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setToken, setUser, backendUrl } = useContext(AppContext);
+  const [passwordShow, setPasswordShow] = useState(false);
 
   const onSubmitHandler = async (e) => {
     setIsLoading(true);
@@ -118,7 +119,7 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                   />
                 </div>
 
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Password
                   </label>
@@ -126,25 +127,30 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                     name="password"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    type="password"
-                    className="w-full px-4 py-3 bg-gray-800/50 rounded-lg border border-gray-700 
-                    focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
+                    type={passwordShow ? "text" : "password"}
+                    className="w-full px-4 py-3 pr-10 bg-gray-800/50 rounded-lg border border-gray-700 
+    focus:border-blue-500 focus:outline-none text-white placeholder:text-gray-500"
                     placeholder="Create a password"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordShow(!passwordShow)}
+                    className="absolute right-4 top-[60%] transform -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+                  >
+                    {passwordShow ? (
+                      <FaEyeSlash className="w-5 h-5" />
+                    ) : (
+                      <FaEye className="w-5 h-5" />
+                    )}
+                  </button>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full text-white bg-gradient-to-r from-gray-900 to-zinc-800 
-                  hover:from-gray-800 hover:to-zinc-700 px-6 py-3 rounded-lg text-sm 
-                  font-medium transition-all duration-300 border border-zinc-600 
-                  hover:border-zinc-500 shadow-lg hover:shadow-zinc-700/50"
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  disabled={isLoading}
                 >
-                  {isLoading ? (
-                    <span className="loading loading-dots loading-md"></span>
-                  ) : (
-                    "Sign Up"
-                  )}
+                  {isLoading ? "Creating Account..." : "Sign Up"}
                 </button>
               </form>
 
