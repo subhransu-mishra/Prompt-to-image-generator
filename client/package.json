@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "react-scripts build",
+    "build": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "react-scripts start",
@@ -14,6 +14,9 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
+  },
+  "engines": {
+    "node": ">=18.x"
   },
   "dependencies": {
     "axios": "^1.7.9",
