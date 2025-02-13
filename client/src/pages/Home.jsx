@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import HowWorks from "../components/HowWorks";
 import Description from "../components/Description";
 import Testimonials from "../components/Testimonials";
-import Footer from "../components/footer";
+import Footer from "./../components/Footer";
 import Faq from "../components/Faq";
 
 const Home = () => {
