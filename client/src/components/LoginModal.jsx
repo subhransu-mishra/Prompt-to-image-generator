@@ -4,6 +4,7 @@ import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import { FaTimes, FaEye, FaEyeSlash } from "react-icons/fa";
+import TrueFocus from "../ui/TrueFocus";
 
 const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
   const [email, setEmail] = useState("");
@@ -114,8 +115,18 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
 
             {/* Login Form */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-white text-center">
-                Welcome to Canvas.ai
+              <h2 className="text-2xl font-bold text-white text-center m-6">
+                Welcome to{" "}
+                {
+                  <TrueFocus
+                    sentence="Canvas AI"
+                    manualMode={false}
+                    blurAmount={5}
+                    borderColor="cyan"
+                    animationDuration={1}
+                    pauseBetweenAnimations={1}
+                  />
+                }
               </h2>
 
               <form onSubmit={onSubmitHandler} className="space-y-4">
@@ -164,7 +175,9 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                     >
                       {showPassword ? (
                         <FaEyeSlash className="w-5 h-5" />

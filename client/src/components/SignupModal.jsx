@@ -5,6 +5,8 @@ import { useState } from "react";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import StarBorder from "../ui/StarBorder";
+import TrueFocus from "../ui/TrueFocus";
 
 const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
   const [name, setName] = useState("");
@@ -30,15 +32,13 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
       if (data.success) {
         setToken(data.token);
         setUser(data.user);
-        localStorage.setItem("token", data.token); // Corrected here
+        localStorage.setItem("token", data.token);
         onClose();
         toast.success("Account created successfully");
       } else {
-        // Ensure this block only runs if data.success is false
         toast.error(data.message || "Registration failed. Please try again.");
       }
     } catch (error) {
-      // Access error response safely
       const errorMessage =
         error.response?.data?.message ||
         "Something went wrong. Please try again.";
@@ -57,7 +57,6 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center"
         >
-          {/* Backdrop with blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -66,7 +65,6 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
             onClick={onClose}
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -74,7 +72,6 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
             transition={{ type: "spring", duration: 0.5 }}
             className="relative bg-gradient-to-b from-gray-900 to-black p-8 rounded-lg shadow-xl w-[90%] max-w-md border border-gray-800"
           >
-            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
@@ -82,10 +79,17 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
               <FaTimes className="w-5 h-5" />
             </button>
 
-            {/* Signup Form */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-white text-center">
-                Create Account
+              <h2 className="text-2xl font-bold text-white text-center gap-2">
+                Create Account in <TrueFocus
+                    sentence="Canvas AI"
+                    manualMode={false}
+                    blurAmount={5}
+                    borderColor="cyan"
+                    animationDuration={1}
+                    pauseBetweenAnimations={1}
+                    
+                  />
               </h2>
 
               <form className="space-y-4" onSubmit={onSubmitHandler}>
@@ -145,24 +149,19 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                   </button>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Creating Account..." : "Sign Up"}
-                </button>
+                <StarBorder as="div" className="flex justify-center" color="cyan" speed="5s">
+                  <motion.button
+                    type="submit"
+                    className="rounded-lg text-lg font-medium flex items-center gap-2 mx-auto text-white transition-colors"
+                    whileHover={{ scale: 1.1, rotate: 3 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Creating Account..." : "Sign Up"}
+                  </motion.button>
+                </StarBorder>
               </form>
-
-              <div className="text-center text-sm text-gray-400">
-                Already have an account?{" "}
-                <button
-                  onClick={switchToLogin}
-                  className="text-blue-400 hover:text-blue-300 font-medium"
-                >
-                  Sign In
-                </button>
-              </div>
             </div>
           </motion.div>
         </motion.div>
@@ -172,3 +171,5 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
 };
 
 export default SignupModal;
+
+

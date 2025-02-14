@@ -2,7 +2,7 @@ import React from "react";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaLinkedinIn } from "react-icons/fa6";
-
+import ShinyText from "../ui/ShinyText";
 
 const Footer = () => {
   return (
@@ -49,7 +49,7 @@ const Footer = () => {
           {/* Divider */}
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent"></div>
           <div className="text-sm text-gray-400">
-            Developed by <span className="hover:text-gray-600 text-white"><Link to="https://subhransumishra.me/">Subhransu</Link></span>
+            Developed by <span className="hover:text-gray-600 text-white"><Link to="https://subhransumishra.me/"><ShinyText text="Subhransu" disabled={false} speed={3} className='custom-class text-lg' /></Link></span>
           </div>
           {/* Copyright */}
           <div className="text-sm text-gray-400">

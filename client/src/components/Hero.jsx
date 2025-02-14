@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { RiAiGenerate2 } from "react-icons/ri";
 import { motion } from "framer-motion";
 import "../styles/Hero.css";
-
+import StarBorder from "../ui/StarBorder";
+import BlurText from "../ui/BlurText";
 const Hero = () => {
   const navigate = useNavigate();
 
@@ -45,21 +46,17 @@ const Hero = () => {
             Discover the magic of AI-powered creativity! Type your thoughts and
             watch them turn into captivating visuals instantly.
           </motion.p>
-
-          <motion.button
-            onClick={() => navigate("/result")}
-            className="mt-6 px-10 py-3 rounded-lg text-lg font-medium bg-gradient-to-r from-gray-900 to-zinc-800 text-white border border-zinc-600 shadow-lg flex items-center gap-2 mx-auto"
-            whileHover={{
-              scale: 1.1,
-              backgroundColor: "#3b82f6",
-              transition: { duration: 0.3 },
-            }}
-            whileTap={{ scale: 0.95 }}
-            animate={{ y: [0, -5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-          >
-            Try Now <RiAiGenerate2 className="w-6 h-6" />
-          </motion.button>
+          <StarBorder as="div" className="custom-class" color="cyan" speed="5s">
+            <motion.button
+              onClick={() => navigate("/result")}
+              className="rounded-lg text-lg font-medium flex items-center gap-2 mx-auto"
+              whileHover={{ scale: 1.1, rotate: 3 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              Try Now <RiAiGenerate2 className="w-6 h-6" />
+            </motion.button>
+          </StarBorder>
         </div>
       </div>
     </div>

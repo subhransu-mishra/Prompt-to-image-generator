@@ -13,16 +13,12 @@ const allowedOrigins = [
   'https://canvas-ai-4-git-main-subhransu-sekhar-mishras-projects.vercel.app',
   'https://canvas-ai-4.vercel.app',
   'http://localhost:5173',
-  // Add any other domains you need
 ];
 
-// CORS configuration
+// Enhanced CORS configuration
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -30,7 +26,12 @@ app.use(cors({
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With',
+    'token' // Explicitly allow the token header
+  ]
 }));
 
 // Error handling for CORS
@@ -48,13 +49,15 @@ app.use((err, req, res, next) => {
 app.use(express.json());
 
 // Connect to MongoDB
-try {
-  await connectDB();
-  console.log('Connected to MongoDB');
-} catch (error) {
-  console.error('MongoDB connection error:', error);
-  process.exit(1);
-}
+(async () => {
+  try {
+    await connectDB();
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  }
+})();
 
 // Routes
 app.use("/api/user", userRouter);
@@ -74,7 +77,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
-    message: 'Something went wrong!'
+    message: 'Internal server error'
   });
 });
 

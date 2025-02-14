@@ -1,6 +1,5 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
-import { testimonialsData } from "../assets/assets";
 const Testimonials = () => {
   const testimonials = [
     {
