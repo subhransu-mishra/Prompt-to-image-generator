@@ -1,10 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiAiGenerate2 } from "react-icons/ri";
 import { motion } from "framer-motion";
 import "../styles/Hero.css";
 import StarBorder from "../ui/StarBorder";
-import BlurText from "../ui/BlurText";
+import DecryptedText from "../ui/DecryptedText";
+
 const Hero = () => {
   const navigate = useNavigate();
 
@@ -45,6 +46,22 @@ const Hero = () => {
           >
             Discover the magic of AI-powered creativity! Type your thoughts and
             watch them turn into captivating visuals instantly.
+          </motion.p>
+          <motion.p
+            className="text-lg mt-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+          >
+            Developed by{" "}
+            <Link to="http://subhransumishra.me">
+              <DecryptedText
+                text="this guy"
+                animateOn="view"
+                revealDirection="center"
+                
+              />
+            </Link>
           </motion.p>
           <StarBorder as="div" className="custom-class" color="cyan" speed="5s">
             <motion.button

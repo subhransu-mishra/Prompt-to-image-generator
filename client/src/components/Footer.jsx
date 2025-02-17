@@ -48,6 +48,7 @@ const Footer = () => {
 
           {/* Divider */}
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent"></div>
+          <p className="text-white">For support : work.subhransu@gmail.com</p>
           <div className="text-sm text-gray-400">
             Developed by <span className="hover:text-gray-600 text-white"><Link to="https://subhransumishra.me/"><ShinyText text="Subhransu" disabled={false} speed={3} className='custom-class text-lg' /></Link></span>
           </div>

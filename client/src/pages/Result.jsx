@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { assets } from "../assets/assets";
+import React, { useState, useContext } from "react";
+import {assets} from "./../assets/assets";
 import { FaMagic } from "react-icons/fa";
 import { FiDownload } from "react-icons/fi";
 import { toast } from "react-toastify";
@@ -8,19 +8,22 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 const Result = () => {
-  const [image, setImage] = useState("/earth-pic.jpg");
+  const [image, setImage] = useState(
+    "https://www.pbs.org/wgbh/nova/media/images/AncientEarth_Blank_Series_Image_16x9.width-2000.jpg"
+  );
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
-  
+
   const { backendUrl, token, loadCreditsData } = useContext(AppContext);
   const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     if (!input) return;
-    
+
     setLoading(true);
+    setIsImageLoaded(false); // Reset isImageLoaded to false when generating a new image
     try {
       const generatedImage = await generateImage(input);
       if (generatedImage) {
@@ -42,13 +45,13 @@ const Result = () => {
         { prompt },
         { headers: { token } }
       );
-      
+
       if (!data.success) {
         toast.error(data.message);
         if (data.credits <= 0) navigate("/buy");
         return null;
       }
-      
+
       loadCreditsData();
       return data.resultImage;
     } catch (error) {
@@ -59,23 +62,23 @@ const Result = () => {
 
   return (
     <div className="min-h-screen bg-primary pt-24 flex items-center justify-center">
-      <div className="max-w-4xl w-full flex flex-col items-center justify-center gap-8 px-4 sm:px-6">
+      <div className="max-w-6xl w-full flex flex-col items-center justify-center gap-8 px-4 sm:px-6">
         {/* Image Result Section */}
         <div className="w-full flex justify-center">
-          <div className="relative rounded-xl overflow-hidden shadow-2xl w-[280px] sm:w-[400px] md:w-[450px] group">
+          <div className="relative rounded-xl overflow-hidden shadow-2xl w-[350px] sm:w-[500px] md:w-[600px] group">
             {loading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
-                <span className="loading loading-infinity loading-md"></span> 
+                <span className="loading loading-infinity loading-md"></span>
               </div>
             )}
-            <img 
-              src={image} 
-              className="w-full h-auto sm:w-96" 
-              alt="Generated Image" 
+            <img
+              src={image}
+              className="w-full h-auto sm:w-[500px] md:w-[600px]"
+              alt="Generated Image"
               onLoad={() => setIsImageLoaded(true)}
               onError={() => setIsImageLoaded(false)}
             />
-            
+
             {/* Download Button */}
             {isImageLoaded && image !== assets.earth_img && (
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -93,7 +96,10 @@ const Result = () => {
 
         {/* Input Section */}
         <div className="w-full max-w-md flex flex-col items-center gap-6 px-4 sm:px-0">
-          <form onSubmit={onSubmitHandler} className="w-full flex flex-col items-center gap-4">
+          <form
+            onSubmit={onSubmitHandler}
+            className="w-full flex flex-col items-center gap-4"
+          >
             <div className="w-full relative">
               <input
                 onChange={(e) => setInput(e.target.value)}
