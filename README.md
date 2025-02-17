@@ -64,11 +64,15 @@ npm run dev
 ```
 
 ## Screenshots
-![Screenshot 2025-02-04 180746](https://github.com/user-attachments/assets/b677453f-9640-458b-b97e-9e06b0def537)
-![Screenshot 2025-02-04 180810](https://github.com/user-attachments/assets/6b27e78e-25d7-40d7-a0e9-725b31c69df4)
-![Screenshot 2025-02-04 180828](https://github.com/user-attachments/assets/3ac0bbc2-e794-4b7b-bec6-f7726724d2c7)
-![Screenshot 2025-02-04 180845](https://github.com/user-attachments/assets/cd61b2bb-3c84-48cc-93d6-aadf7b7067bf)
-![Screenshot 2025-02-04 181231](https://github.com/user-attachments/assets/bc4a41bb-60f9-4f08-aec3-f5b9f8b4de4f)
+![Screenshot 2025-02-17 220807](https://github.com/user-attachments/assets/c1b5e937-7493-40ac-a0a0-0978a4b252ca)
+![Screenshot 2025-02-17 220744](https://github.com/user-attachments/assets/1ae6860f-a5f8-4163-9e79-667823d37e60)
+![Screenshot 2025-02-17 221044](https://github.com/user-attachments/assets/887b9424-8dd8-40b9-af9a-221695dcc99c)
+![Screenshot 2025-02-17 220633](https://github.com/user-attachments/assets/96839f5c-ccb3-4233-b7b7-93bbe934cb87)
+![Screenshot 2025-02-17 220606](https://github.com/user-attachments/assets/7087be5e-45ca-4c5b-baa2-3b331c39745c)
+![Screenshot 2025-02-17 220552](https://github.com/user-attachments/assets/778f8719-e336-47d6-8253-7b080b8fb72d)
+![Screenshot 2025-02-17 220535](https://github.com/user-attachments/assets/3e894741-7ccd-45ed-85f7-023dd6c0ca8b)
+![Screenshot 2025-02-17 220457](https://github.com/user-attachments/assets/7b50f0c3-09a8-4426-b397-a4ec5044a3f1)
+
 
 
 ## Contribution
