@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
