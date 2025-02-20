@@ -68,9 +68,9 @@ const paymentRazorpay = async (req, res) => {
     }
 
     const plans = {
-      Starter: { amount: 10, credits: 100 },
-      Professional: { amount: 14.99, credits: 200 },
-      Enterprise: { amount: 29.99, credits: 500 },
+      Starter: { amount: 99.99, credits: 100 },
+      Professional: { amount: 149.99, credits: 200 },
+      Enterprise: { amount: 199.99, credits: 500 },
     };
 
     const plan = plans[planId];

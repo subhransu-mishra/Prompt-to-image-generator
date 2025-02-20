@@ -15,7 +15,7 @@ const plans = [
     id: "Starter",
     name: "Starter",
     credits: "100",
-    price: "10",
+    price: "99.99",
     features: [
       "50 Image Generations",
       "Standard Resolution",
@@ -29,7 +29,7 @@ const plans = [
     id: "Professional",
     name: "Professional",
     credits: "200",
-    price: "14.99",
+    price: "149.99",
     features: [
       "200 Image Generations",
       "HD Resolution",
@@ -44,7 +44,7 @@ const plans = [
     id: "Enterprise",
     name: "Enterprise",
     credits: "500",
-    price: "29.99",
+    price: "199.99",
     features: [
       "500 Image Generations",
       "4K Resolution",
@@ -75,35 +75,36 @@ const BuyCredit = () => {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency,
-      name: 'Credits Payment',
-      description: 'Credits Payment',
+      name: 'Payment to SUBHRANSU@SBI',
+      description: 'Credits Payment to SUBHRANSU@SBI',
       order_id: order.id,
+      
       handler: async (response) => {
-        try {
-          const { data } = await axios.post(
-            `${backendUrl}/api/user/verify-razor`,
-            response,
-            { headers: { token } }
-          );
-          if (data.success) {
-            const purchasedPlan = plans.find(
-              (plan) => plan.credits === data.transaction?.credits
-            );
-            setEarnedCredits(purchasedPlan?.credits || 0);
-            setShowCongrats(true);
-            await loadCreditsData();
-            setTimeout(() => {
-              setShowCongrats(false);
-              navigate("/dashboard");
-            }, 5000);
-            toast.success("Credit Added Successfully!");
-          }
-        } catch (error) {
-          toast.error(error.response?.data?.message || error.message);
+      try {
+        const { data } = await axios.post(
+        `${backendUrl}/api/user/verify-razor`,
+        response,
+        { headers: { token } }
+        );
+        if (data.success) {
+        const purchasedPlan = plans.find(
+          (plan) => plan.credits === data.transaction?.credits
+        );
+        setEarnedCredits(purchasedPlan?.credits || 0);
+        setShowCongrats(true);
+        await loadCreditsData();
+        setTimeout(() => {
+          setShowCongrats(false);
+          navigate("/dashboard");
+        }, 5000);
+        toast.success("Credit Added Successfully!");
         }
+      } catch (error) {
+        toast.error(error.response?.data?.message || error.message);
+      }
       },
       theme: {
-        color: "#3399cc",
+      color: "#0f1624",
       },
     };
 
@@ -198,7 +199,7 @@ const BuyCredit = () => {
             )}
             <h3 className="text-xl font-bold text-white">{plan.name}</h3>
             <div className="text-3xl font-bold text-white mb-4">
-              ${plan.price}
+            ₹{plan.price}
             </div>
             <ul className="text-gray-400 text-sm mb-4">
               {plan.features.map((feature, i) => (

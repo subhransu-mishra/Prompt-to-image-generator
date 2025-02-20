@@ -4,7 +4,7 @@ import { RiAiGenerate2 } from "react-icons/ri";
 import { motion } from "framer-motion";
 import "../styles/Hero.css";
 import StarBorder from "../ui/StarBorder";
-import DecryptedText from "../ui/DecryptedText";
+import BlurText from "../ui/BlurText";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -48,18 +48,18 @@ const Hero = () => {
             watch them turn into captivating visuals instantly.
           </motion.p>
           <motion.p
-            className="text-lg mt-4"
+            className="text-lg mt-4 mx-auto flex justify-center items-center gap-2"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           >
-            Developed by{" "}
             <Link to="http://subhransumishra.me">
-              <DecryptedText
-                text="this guy"
-                animateOn="view"
-                revealDirection="center"
-                
+              <BlurText
+                text="Developed by this guy"
+                delay={150}
+                animateBy="words"
+                direction="top"
+                className="text-xl mb-8 inline"
               />
             </Link>
           </motion.p>

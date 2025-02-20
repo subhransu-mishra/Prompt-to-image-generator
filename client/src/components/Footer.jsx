@@ -35,7 +35,7 @@ const Footer = () => {
               </div>
             </a>
             <a
-              href="https://x.com"
+              href="https://www.linkedin.com/in/subhransu-sekhar-mishra/"
               target="_blank"
               rel="noopener noreferrer"
               className="group"
