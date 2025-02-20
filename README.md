@@ -19,6 +19,12 @@ Welcome to the **AI Image Generator**, a full-stack web application that allows 
 - **Payments**: Razorpay
 - **AI API**: Clipdrop API for image generation
 
+  
+## Deployment
+- This project is live on render.com .
+- Check it out here : [🔗 Link
+](https://canvas-ai-client.onrender.com/)
+
 ## Installation & Setup
 ### Prerequisites
 - Node.js installed
