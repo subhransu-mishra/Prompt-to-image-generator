@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
+import { FaTimes } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +15,7 @@ const plans = [
   {
     id: "Starter",
     name: "Starter",
-    credits: "100",
+    credits: 100,
     price: "99.99",
     features: [
       "50 Image Generations",
@@ -28,7 +29,7 @@ const plans = [
   {
     id: "Professional",
     name: "Professional",
-    credits: "200",
+    credits: 200,
     price: "149.99",
     features: [
       "200 Image Generations",
@@ -43,7 +44,7 @@ const plans = [
   {
     id: "Enterprise",
     name: "Enterprise",
-    credits: "500",
+    credits: 500,
     price: "199.99",
     features: [
       "500 Image Generations",
@@ -87,15 +88,15 @@ const BuyCredit = () => {
         { headers: { token } }
         );
         if (data.success) {
-        const purchasedPlan = plans.find(
-          (plan) => plan.credits === data.transaction?.credits
-        );
-        setEarnedCredits(purchasedPlan?.credits || 0);
+          const purchasedPlan = plans.find(
+            (plan) => plan.id === selectedPlan // Match by plan ID instead of credits
+          );
+          setEarnedCredits(purchasedPlan?.credits || 0);
         setShowCongrats(true);
         await loadCreditsData();
         setTimeout(() => {
           setShowCongrats(false);
-          navigate("/dashboard");
+          
         }, 5000);
         toast.success("Credit Added Successfully!");
         }
@@ -158,9 +159,15 @@ const BuyCredit = () => {
 
       {showPaymentPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-          <div className="bg-gradient-to-b from-gray-900 to-black p-6 rounded-lg shadow-lg text-center max-w-md w-full">
-            <h3 className="text-lg font-semibold mb-4">
-              We only accept credit cards or international debit cards . We are facing some technical issues on other payment methods. 
+          <div className="relative bg-gradient-to-b from-gray-900 to-black p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+            <button 
+              onClick={() => setShowPaymentPopup(false)}
+              className="absolute top-2 right-2 text-gray-400 hover:text-white"
+            >
+              <FaTimes size={24} />
+            </button>
+            <h3 className="text-lg font-semibold mb-4 text-gray-400">
+              Are you sure you want to purchase this plan?
             </h3>
             <button
               className="border-2 border-white text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
