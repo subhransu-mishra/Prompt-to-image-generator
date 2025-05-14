@@ -53,7 +53,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           >
-            <Link to="http://subhransumishra.me">
+            <Link to="https://subhransu.tech/">
               <BlurText
                 text="Developed by this guy"
                 delay={150}
