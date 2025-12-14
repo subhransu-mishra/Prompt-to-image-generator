@@ -1,5 +1,5 @@
 # AI Image Generator (MERN Stack)
-
+#Text to Image generator (Full Stack)
 ## Overview
 Welcome to the **AI Image Generator**, a full-stack web application that allows users to generate AI-powered images through text prompts. This project is built using the **MERN stack** (MongoDB, Express.js, React.js, Node.js) with **Tailwind CSS** for styling.
 
