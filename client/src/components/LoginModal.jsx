@@ -10,7 +10,7 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { setToken, setUser, backendUrl } = useContext(AppContext);
+  const { setToken, setUser, backendUrl, setCredit } = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
 
   // Reset form when modal closes
@@ -60,6 +60,9 @@ const LoginModal = ({ isOpen, onClose, switchToSignup }) => {
       if (data.success) {
         setToken(data.token);
         setUser(data.user);
+        if (data.user.credits !== undefined) {
+          setCredit(data.user.credits);
+        }
         localStorage.setItem("token", data.token);
         onClose();
         toast.success("Account login successful");

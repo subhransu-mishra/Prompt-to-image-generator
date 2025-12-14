@@ -13,7 +13,7 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { setToken, setUser, backendUrl } = useContext(AppContext);
+  const { setToken, setUser, backendUrl, setCredit } = useContext(AppContext);
   const [passwordShow, setPasswordShow] = useState(false);
 
   const onSubmitHandler = async (e) => {
@@ -32,6 +32,9 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
       if (data.success) {
         setToken(data.token);
         setUser(data.user);
+        if (data.user.credits !== undefined) {
+          setCredit(data.user.credits);
+        }
         localStorage.setItem("token", data.token);
         onClose();
         toast.success("Account created successfully");
@@ -81,15 +84,15 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
 
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-white text-center gap-2">
-                Create Account in <TrueFocus
-                    sentence="Canvas AI"
-                    manualMode={false}
-                    blurAmount={5}
-                    borderColor="cyan"
-                    animationDuration={1}
-                    pauseBetweenAnimations={1}
-                    
-                  />
+                Create Account in{" "}
+                <TrueFocus
+                  sentence="Canvas AI"
+                  manualMode={false}
+                  blurAmount={5}
+                  borderColor="cyan"
+                  animationDuration={1}
+                  pauseBetweenAnimations={1}
+                />
               </h2>
 
               <form className="space-y-4" onSubmit={onSubmitHandler}>
@@ -149,7 +152,12 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
                   </button>
                 </div>
 
-                <StarBorder as="div" className="flex justify-center" color="cyan" speed="5s">
+                <StarBorder
+                  as="div"
+                  className="flex justify-center"
+                  color="cyan"
+                  speed="5s"
+                >
                   <motion.button
                     type="submit"
                     className="rounded-lg text-lg font-medium flex items-center gap-2 mx-auto text-white transition-colors"
@@ -171,5 +179,3 @@ const SignupModal = ({ isOpen, onClose, switchToLogin }) => {
 };
 
 export default SignupModal;
-
-

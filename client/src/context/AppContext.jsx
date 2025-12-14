@@ -19,7 +19,7 @@ const AppContextProvider = (props) => {
           token,
         },
       });
-      if(data.success){
+      if (data.success) {
         setCredit(data.credits);
         setUser(data.user);
       }
@@ -29,20 +29,20 @@ const AppContextProvider = (props) => {
     }
   };
 
-  
   useEffect(() => {
-    if (token) {
+    // Only load credits if we have a token but no credit value yet
+    if (token && credit === false) {
       loadCreditsData();
     }
   }, [token]);
 
   const logout = () => {
     localStorage.removeItem("token");
-    setToken('');
+    setToken("");
     setUser(null);
     setCredit(null);
     toast.success("Logged out successfully");
-  }
+  };
   const value = {
     user,
     setUser,
@@ -52,7 +52,7 @@ const AppContextProvider = (props) => {
     credit,
     setCredit,
     loadCreditsData,
-    logout
+    logout,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>

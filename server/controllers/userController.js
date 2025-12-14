@@ -15,16 +15,26 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 8);
     const newUser = new userModel({ name, email, password: hashedPassword });
     const user = await newUser.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    res.status(201).json({ success: true, token, user: { name: user.name } });
+    res
+      .status(201)
+      .json({
+        success: true,
+        token,
+        user: { name: user.name, credits: user.creditBalance },
+      });
   } catch (error) {
     console.error("Registration Error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -38,12 +48,20 @@ const loginUser = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ success: false, message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    res.json({ success: true, token, user: { name: user.name } });
+    res.json({
+      success: true,
+      token,
+      user: { name: user.name, credits: user.creditBalance },
+    });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -55,9 +73,15 @@ const userCredits = async (req, res) => {
   try {
     const user = await userModel.findById(req.body.userId);
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
-    res.json({ success: true, credits: user.creditBalance, user: { name: user.name } });
+    res.json({
+      success: true,
+      credits: user.creditBalance,
+      user: { name: user.name },
+    });
   } catch (error) {
     console.error("User Credits Error:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
@@ -69,7 +93,9 @@ const paymentRazorpay = async (req, res) => {
   try {
     const { userId, planId } = req.body;
     if (!userId || !planId) {
-      return res.status(400).json({ success: false, message: "Missing details" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing details" });
     }
 
     const plans = {
@@ -96,28 +122,33 @@ const paymentRazorpay = async (req, res) => {
       credits: plan.credits,
       amount: plan.amount,
       payment: false,
-      razorpayOrderId: order.id // <-- Add Razorpay ID at creation time
+      razorpayOrderId: order.id, // <-- Add Razorpay ID at creation time
     });
 
     res.json({ success: true, order });
   } catch (error) {
     console.error("Payment Initiation Error:", error);
-    res.status(500).json({ success: false, message: "Payment initiation failed" });
+    res
+      .status(500)
+      .json({ success: false, message: "Payment initiation failed" });
   }
 };
 
 // Verify Razorpay Payment (Fixed)
 const verifyRazorpay = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
 
     // Find transaction by Razorpay's order ID (NOT MongoDB _id)
-    const transaction = await transactionModel.findOne({ 
-      razorpayOrderId: razorpay_order_id  // <-- FIXED: Use Razorpay's ID
+    const transaction = await transactionModel.findOne({
+      razorpayOrderId: razorpay_order_id, // <-- FIXED: Use Razorpay's ID
     });
 
     if (!transaction) {
-      return res.status(404).json({ success: false, message: "Transaction not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Transaction not found" });
     }
 
     // Verify signature
@@ -127,7 +158,9 @@ const verifyRazorpay = async (req, res) => {
       .digest("hex");
 
     if (expectedSignature !== razorpay_signature) {
-      return res.status(400).json({ success: false, message: "Invalid payment signature" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid payment signature" });
     }
 
     // Update transaction
@@ -144,8 +177,16 @@ const verifyRazorpay = async (req, res) => {
     res.json({ success: true, message: "Payment verified, credits added" });
   } catch (error) {
     console.error("Payment Verification Error:", error);
-    res.status(500).json({ success: false, message: "Payment verification failed" });
+    res
+      .status(500)
+      .json({ success: false, message: "Payment verification failed" });
   }
 };
 
-export { registerUser, loginUser, userCredits, paymentRazorpay, verifyRazorpay };
+export {
+  registerUser,
+  loginUser,
+  userCredits,
+  paymentRazorpay,
+  verifyRazorpay,
+};
